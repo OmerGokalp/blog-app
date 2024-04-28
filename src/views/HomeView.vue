@@ -1,18 +1,25 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div v-for="post in posts" :key="post.id">
+      <SinglePost :post="post"></SinglePost>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import {ref} from "vue";
+import SinglePost from "../components/SinglePost.vue";
+import getPosts from "../composables/getPosts";
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
+  name: "HomeView",
+  components: { SinglePost },
+  setup() {
+    const posts = ref([]);
+    getPosts().then((data) => {
+      posts.value = data;
+    });
+    console.log(posts);
+    return { posts };    
+  },
+};
 </script>
